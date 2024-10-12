@@ -68,6 +68,30 @@ app.get('/api/:imageName', (req, res) => {
 });
 
 
+app.get('/api/flights/:imageName', (req, res) => {
+    const imageName = req.params.imageName;
+    const imagePath = path.join(__dirname, 'assets/flights/', imageName);
+
+    // 发送图片文件
+    res.sendFile(imagePath, (err) => {
+        if (err) {
+            res.status(err.status).end();
+        }
+    });
+});
+
+
+app.get('/api/groups/:imageName', (req, res) => {
+    const imageName = req.params.imageName;
+    const imagePath = path.join(__dirname, 'assets/groups/', imageName);
+
+    // 发送图片文件
+    res.sendFile(imagePath, (err) => {
+        if (err) {
+            res.status(err.status).end();
+        }
+    });
+});
 
 app.post('/api/uploadNote', async (req, res) => {
     const { title, content, image,username } = req.body;

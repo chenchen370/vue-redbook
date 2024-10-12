@@ -189,6 +189,15 @@ export default {
                     console.error('获取用户数据失败:', err);
                 });
         },
+         formatDate(date) {
+            const day = String(date.getDate()).padStart(2, '0'); // 日
+            const month = String(date.getMonth() + 1).padStart(2, '0'); // 月（注意要加1）
+            const year = String(date.getFullYear()).slice(-2); // 年（取后两位）
+            const hours = String(date.getHours()).padStart(2, '0'); // 时
+            const minutes = String(date.getMinutes()).padStart(2, '0'); // 分
+
+            return `${day}/${month}/${year} ${hours}:${minutes}`;
+        },
         inputFocus() {
             const replyInput = document.getElementById('replyInput');
             if (replyInput) {
@@ -222,7 +231,7 @@ export default {
                 id: Date.now(), // 生成一个唯一的ID
                 headImg: this.myHeader, // 使用从login表中获取的头像
                 comment: this.replyComment,
-                time: new Date().toLocaleString(), // 当前时间
+                time: this.formatDate(new Date()), // 当前时间
                 commentNum: 0,
                 like: 0,
                 reply: []

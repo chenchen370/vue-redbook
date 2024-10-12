@@ -1,0 +1,279 @@
+<template>
+    <div class="chat-container">
+      <div class="sidebar">
+        <h3>在线用户</h3>
+        <ul>
+          <li v-for="(user, index) in onlineUsers" :key="index" :class="{ offline: !user.online }">
+            <img :src="user.avatar" class="user-avatar" />
+            <span>{{ user.name }}</span>
+            <span class="status" :class="{ online: user.online, offline: !user.online }"></span>
+          </li>
+        </ul>
+      </div>
+      <div class="chat-area">
+        <div class="chat-title">
+          <h3>{{ flightNumber }} - {{ flightDate }}</h3>
+        </div>
+        <div class="chat-box">
+          <div v-for="(message, index) in messages" :key="index" class="message">
+            <div class="message-content" :class="{ 'user-message': message.sender === 'user', 'bot-message': message.sender === 'bot' }">
+              <router-link v-if="message.sender === 'bot'" :to="`/userProfile?username=${username}`">
+                <img :src="botAvatar" class="avatar" />
+              </router-link>
+              <div class="text">{{ message.text }}</div>
+              <img v-if="message.sender === 'user'" :src="userAvatar" class="avatar" />
+            </div>
+          </div>
+        </div>
+        <div class="input-box">
+          <input
+            v-model="inputMessage"
+            type="text"
+            placeholder="输入消息..."
+            @keyup.enter="sendMessage"
+          />
+          <button @click="sendMessage">发送</button>
+        </div>
+      </div>
+    </div>
+  </template>
+  
+  <script setup>
+  import { ref, onMounted } from 'vue';
+  import { useRoute } from 'vue-router';
+  import axios from 'axios';
+  
+  // 消息记录
+  const messages = ref([
+    { sender: 'bot', text: '你好！' }
+  ]);
+  
+  // 用户输入
+  const inputMessage = ref('');
+  
+  // 头像路径
+  const route = useRoute();
+  const username = ref('');
+  const userData = ref(null);
+  const error = ref(null);
+  
+  // 头像路径
+  const userAvatar = ref('http://localhost:3000/api/1728641884781.png'); // 默认用户头像路径
+  const botAvatar = ref('http://localhost:3000/api/groups/QQ图片20241013014017.jpg'); // 默认机器人头像路径
+  
+  // 航班信息从 URL 获取
+  const flightNumber = ref('');
+  const flightDate = ref('');
+  
+  // 在线用户列表（示例数据）
+  const onlineUsers = ref([
+    { name: '用户1', avatar: 'http://localhost:3000/api/groups/QQ图片20241013014017.jpg', online: true },
+    { name: '用户2', avatar: 'http://localhost:3000/api/groups/QQ图片20241013014036.jpg', online: true },
+    { name: '用户3', avatar: 'http://localhost:3000/api/groups/QQ图片20241013014114.jpg', online: false },
+    { name: '用户4', avatar: 'http://localhost:3000/api/groups/QQ图片20241013014528.jpg', online: true },
+  ]);
+  
+  // 发送消息函数
+  function sendMessage() {
+    if (inputMessage.value.trim() !== '') {
+      // 添加用户消息
+      messages.value.push({ sender: 'user', text: inputMessage.value });
+  
+      // 模拟机器人回复
+      setTimeout(() => {
+        messages.value.push({ sender: 'bot', text: '你说的是：' + inputMessage.value });
+      }, 500);
+  
+      // 清空输入框
+      inputMessage.value = '';
+    }
+  }
+  
+  // 获取航班信息
+  const fetchFlightInfo = () => {
+    flightNumber.value = route.query.flightNumber || '未知航班号';
+    flightDate.value = route.query.flightDate || '未知日期';
+  };
+  
+  // 获取用户数据
+  const fetchUserData = async () => {
+    username.value = route.query.username;
+    if (!username.value) {
+      error.value = 'Username not found in URL';
+      return;
+    }
+  
+    try {
+      const response = await axios.get('/api/api/getUserData', {
+        params: { username: username.value }
+      });
+      userData.value = response.data;
+      botAvatar.value = `http://localhost:3000/api/${response.data.author_avatar}`;
+    } catch (err) {
+      error.value = err.response?.data?.message || 'An error occurred while fetching user data';
+    }
+  };
+  
+  // 获取个人数据
+  const fetchPersonData = async () => {
+    if (!username.value) {
+      error.value = 'Username not found in URL';
+      return;
+    }
+  
+    try {
+      const response = await axios.get('/api/api/getPersonData', {
+        params: { username: localStorage.getItem('username') }
+      });
+      userData.value = response.data;
+      userAvatar.value = `http://localhost:3000/api/${response.data.img_src}`;
+    } catch (err) {
+      error.value = err.response?.data?.message || 'An error occurred while fetching user data';
+      console.error('Error fetching user data:', err);
+    }
+  };
+  
+  onMounted(async () => {
+    fetchFlightInfo();
+    await Promise.all([fetchUserData(), fetchPersonData()]);
+  });
+  </script>
+  
+  <style scoped>
+  .chat-container {
+    display: flex;
+    width: 800px;
+    height: 60%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .sidebar {
+    width: 200px;
+    border-right: 1px solid #ccc;
+    padding: 10px;
+    background-color: #f9f9f9;
+  }
+  
+  .sidebar h3 {
+    margin-bottom: 10px;
+  }
+  
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  
+  .user-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .status {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-left: auto;
+  }
+  
+  .online {
+    background-color: green;
+  }
+  
+  .offline {
+    background-color: gray;
+  }
+  
+  .chat-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .chat-title {
+    padding: 10px;
+    background-color: #f0f0f0;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .chat-box {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .message {
+    margin-bottom: 10px;
+  }
+  
+  .message-content {
+    display: flex;
+    align-items: center;
+    max-width: 100%;
+  }
+  
+  .avatar {
+    width: 40px; /* 头像宽度 */
+    height: 40px; /* 头像高度 */
+    border-radius: 50%;
+    margin-left: 10px; /* 头像与文字的间距 */
+  }
+  
+  .user-message {
+    justify-content: flex-end; /* 用户消息靠右 */
+  }
+  
+  .bot-message {
+    justify-content: flex-start; /* 机器人消息靠左 */
+  }
+  
+  .text {
+    background-color: #e1f5fe; /* 用户消息背景色 */
+    padding: 8px;
+    border-radius: 4px;
+    word-wrap: break-word; /* 处理长文本 */
+  }
+  
+  .bot-message .text {
+    background-color: #e0e0e0; /* 机器人消息背景色 */
+  }
+  
+  .input-box {
+    display: flex;
+    padding: 5px;
+    background-color: #fff;
+  }
+  
+  input[type="text"] {
+    flex: 1;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  button {
+    margin-left: 5px;
+    padding: 5px 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  </style>
+  

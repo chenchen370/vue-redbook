@@ -11,9 +11,6 @@ const routes = [
   { path: '/comment', 
     name:'comment',
     component: ()=>import('@/components/comment/comMent.vue') },
-
-         
-
   { path: '/Register', 
     name:'Register',
     component: ()=>import('@/views/login/RegisterPage.vue') },
@@ -25,6 +22,10 @@ const routes = [
       { path:'/mainPage',
         name:'mainpage',
         component: ()=>import('@/components/index/mainPage.vue')
+      },
+      { path:'/groupChat',
+        name:'groupChat',
+        component: ()=>import('@/components/chat/groupChat.vue')
       },
       {
         path:'/userProfile',

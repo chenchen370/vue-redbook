@@ -1,122 +1,163 @@
 <template>
+  <div>
     <div>
-      <div>
-        <label for="date-picker">选择日期:</label>
-        <input type="date" id="date-picker" v-model="selectedDate" @change="fetchUsers" />
-      </div>
-  
-      <div class="grid-container">
-        <div v-for="(item, index) in filteredUsers" :key="index" class="grid-item">
-          <img :src="`http://localhost:3000/api/${item.author_avatar}`" :alt="`${item.username}'s avatar`"> 
-          <div class="place-info">
-            <div>
-              <h3>{{ item?.username }}</h3>
-            </div>
-  
-            <div style="display: flex;">
-              <div>
-                <p>地址: {{ item.ip }}</p>
-              </div>
-              <div style="margin-left: 20px">
-                <p>日期: {{ item.date }}</p>
-              </div>
-            </div>
-  
-            <div style="display: flex; align-items: center; width: 100%;">
-              <div>
-                <p>
-                  <svg t="1728630175375" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1566" width="40" height="40">
-                    <path d="M512 901.746939c-13.583673 0-26.122449-4.179592-37.093878-13.061225-8.881633-7.314286-225.697959-175.020408-312.424489-311.379592C133.746939 532.37551 94.040816 471.24898 94.040816 384.522449c0-144.718367 108.146939-262.269388 240.326531-262.269388 67.395918 0 131.657143 30.82449 177.632653 84.636735 45.453061-54.334694 109.191837-84.636735 177.110204-84.636735 132.702041 0 240.326531 117.55102 240.326531 262.269388 0 85.159184-37.093878 143.673469-67.395919 191.216327l-1.044898 1.567346c-86.726531 136.359184-303.542857 304.587755-312.424489 311.379592-10.44898 8.359184-22.987755 13.061224-36.571429 13.061225z" fill="#E5404F" p-id="1567"></path>
-                  </svg>
-                </p>
-              </div>
-              <div>{{ item.likes }} 赞</div>
-              <div style="margin-left: 10px; flex: 1;">
-                <p>距离: 200 km</p>
-              </div>
-              <router-link :to="`chat?username=${item.username}`">
-                <div style="margin-left: 10px;">
-                  <svg t="1728630045266" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10599" width="40" height="40">
-                    <path d="M512 0c282.8 0 512 229.2 512 512s-229.2 512-512 512S0 794.8 0 512 229.2 0 512 0z" fill="#E9E9FF" p-id="10600"></path>
-                    <path d="M511.8 268.3c-142.9 0-258.5 101.5-258.5 226.5 0 71.3 38.1 135.1 97 176.5v114.5l113.4-68.6c15.7 2.6 31.7 4.1 48.5 4.1 142.9 0 258.5-101.1 258.5-226.5s-116-226.5-258.9-226.5z" fill="#FFFFFF" p-id="10601"></path>
-                    <path d="M511.8 462.3c-17.9 0-32.5 14.5-32.5 32.5 0 17.9 14.5 32.5 32.5 32.5 17.9 0 32.5-14.5 32.5-32.5 0-17.9-14.6-32.5-32.5-32.5zM382.7 462.3c-17.9 0-32.5 14.5-32.5 32.5 0 17.9 14.5 32.5 32.5 32.5 17.9 0 32.5-14.5 32.5-32.5-0.4-17.9-14.6-32.5-32.5-32.5zM641.3 462.3c-17.9 0-32.5 14.5-32.5 32.5 0 17.9 14.5 32.5 32.5 32.5s32.5-14.5 32.5-32.5c-0.1-17.9-14.6-32.5-32.5-32.5z" fill="#4545FF" p-id="10602"></path>
-                  </svg>
-                </div>
-              </router-link>
-            </div>
-          </div>
+      <label for="flight-search">搜索航班号:</label>
+      <input
+        type="text"
+        id="flight-search"
+        v-model="searchQuery"
+        @input="filterFlights"
+        placeholder="输入航班号，例如: AA123"
+        style="font-size: 16px; padding: 10px; width: 300px; margin-right: 10px;"
+      />
+      <button 
+        @click="showSearchResult" 
+        style="font-size: 16px; padding: 10px 20px;"
+      >
+        搜索
+      </button>
+    </div>
+
+    <div v-if="searchResult" class="search-result">
+      当前搜索的航班号: {{ searchResult }}
+    </div>
+
+    <div class="grid-container">
+      <div v-for="(flight, index) in filteredFlights" :key="index" class="grid-item">
+        <img :src="flight.image" :alt="`${flight.flightNumber} 的图片`" />
+        <div class="flight-info">
+          <h3>{{ flight.flightNumber }}</h3>
+          <p>终点站: {{ flight.destination }}</p>
+          <p>日期: {{ flight.date }}</p>
+          <p>航空公司: {{ flight.airline }}</p>
+          <router-link :to="`/groupChat?flightNumber=${flight.flightNumber}&flightDate=${flight.date}`">
+            <button>进入聊天群组</button>
+          </router-link>
         </div>
       </div>
     </div>
-  </template>
-  
-  <script setup>
-  import { ref, onMounted, computed,watch } from 'vue'; 
-  import axios from 'axios';
-  
-  const users = ref([]);
-  const selectedDate = ref('');
-  
-  // 随机生成今天之后的日期
-  const generateRandomDate = () => {
-    const today = new Date();
-    const randomDays = Math.floor(Math.random() * 30) + 1; // 随机生成1到30天
-    const futureDate = new Date(today.getTime() + randomDays * 24 * 60 * 60 * 1000); // 未来的日期
-    return futureDate.toISOString().split('T')[0]; // 返回 YYYY-MM-DD 格式
-  };
-  
-  const fetchUsers = async () => {
-    try {
-      const response = await axios.get('/api/api/users');
-      // 为每个用户添加随机日期
-      users.value = response.data.map(user => ({
-        ...user,
-        date: generateRandomDate()
-      }));
-    } catch (error) {
-      console.error('Error fetching users:', error);
-    }
-  };
-  
-  const filteredUsers = computed(() => {
-    if (!selectedDate.value) {
-      return users.value;
-    }
-    return users.value.filter(user => user.date === selectedDate.value); 
-  });
-  
-  // 当选定日期改变时，重新获取用户数据
-  watch(selectedDate, fetchUsers);
-  
-  onMounted(fetchUsers);
-  </script>
-  
-  <style scoped>
-  .grid-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 每行四个 */
-    gap: 16px; /* 网格间距 */
-    padding: 16px; /* 内边距 */
+
+    <div v-if="filteredFlights.length === 0" class="no-results">
+      没有找到与 "{{ searchQuery }}" 匹配的航班。
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed } from 'vue';
+
+// 模拟航班数据
+const flights = ref([
+  {
+    "flightNumber": "AA123",
+    "destination": "纽约",
+    "date": "2024-10-14",
+    "airline": "美国航空",
+    "image": "http://localhost:3000/api/flights/QQ截图20241013005821.png"
+  },
+  {
+    "flightNumber": "BB456",
+    "destination": "洛杉矶",
+    "date": "2024-10-14",
+    "airline": "达美航空",
+    "image": "http://localhost:3000/api/flights/QQ截图20241013005832.png"
+  },
+  {
+    "flightNumber": "CC789",
+    "destination": "芝加哥",
+    "date": "2024-10-15",
+    "airline": "联合航空",
+    "image": "http://localhost:3000/api/flights/QQ截图20241013005841.png"
+  },
+  {
+    "flightNumber": "DD321",
+    "destination": "旧金山",
+    "date": "2024-10-15",
+    "airline": "西南航空",
+    "image": "http://localhost:3000/api/flights/QQ截图20241013005849.png"
+  },
+  {
+    "flightNumber": "EE654",
+    "destination": "迈阿密",
+    "date": "2024-10-16",
+    "airline": "美国航空",
+    "image": "http://localhost:3000/api/flights/QQ截图20241013005855.png"
+  },
+  {
+    "flightNumber": "FF987",
+    "destination": "西雅图",
+    "date": "2024-10-16",
+    "airline": "达美航空",
+    "image": "http://localhost:3000/api/flights/QQ截图20241013005903.png"
+  },
+  {
+    "flightNumber": "GG234",
+    "destination": "波士顿",
+    "date": "2024-10-17",
+    "airline": "联合航空",
+    "image": "http://localhost:3000/api/flights/QQ截图20241013005910.png"
+  },
+  {
+    "flightNumber": "AH876",
+    "destination": "亚特兰大",
+    "date": "2024-10-17",
+    "airline": "西南航空",
+    "image": "http://localhost:3000/api/flights/QQ截图20241013005917.png"
   }
-  
-  .grid-item {
-    background: #f9f9f9; /* 项目背景 */
-    border: 1px solid #ddd; /* 边框 */
-    border-radius: 8px; /* 圆角 */
-    padding: 10px; /* 内部填充 */
-    display: flex;
-    flex-direction: column; /* 垂直排列内容 */
-    align-items: center; /* 水平居中 */
+]);
+
+const searchQuery = ref('');
+const searchResult = ref('');
+const filteredFlights = computed(() => {
+  if (!searchQuery.value) {
+    return flights.value;
   }
-  
-  .grid-item img {
-    width: 100%; /* 图片宽度 */
-    height: auto; /* 自适应高度 */
-    border-radius: 4px; /* 圆角 */
-  }
-  
-  .place-info {
-    text-align: center; /* 文本居中 */
-  }
-  </style>
-  
+  return flights.value.filter(flight => flight.flightNumber.includes(searchQuery.value.toUpperCase()));
+});
+
+// 显示搜索结果
+const showSearchResult = () => {
+  searchResult.value = searchQuery.value;
+};
+</script>
+
+<style scoped>
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 每行两个 */
+  gap: 16px; /* 网格间距 */
+  padding: 16px; /* 内边距 */
+}
+
+.grid-item {
+  background: #f9f9f9; /* 项目背景 */
+  border: 1px solid #ddd; /* 边框 */
+  border-radius: 8px; /* 圆角 */
+  padding: 10px; /* 内部填充 */
+  display: flex;
+  flex-direction: column; /* 垂直排列内容 */
+  align-items: center; /* 水平居中 */
+}
+
+.grid-item img {
+  width: 100%; /* 图片宽度 */
+  height: auto; /* 自适应高度 */
+  border-radius: 4px; /* 圆角 */
+}
+
+.flight-info {
+  text-align: center; /* 文本居中 */
+}
+
+.search-result {
+  margin: 16px 0;
+  font-size: 1.2em;
+  color: #333;
+}
+
+.no-results {
+  margin: 16px 0;
+  font-size: 1.2em;
+  color: red; /* 提示色 */
+}
+</style>
