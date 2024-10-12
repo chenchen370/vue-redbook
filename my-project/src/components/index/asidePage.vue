@@ -48,14 +48,6 @@
                 </el-menu-item>
             </router-link>
 
-            <router-link to="/neborPage">
-                    <el-menu-item index="5">
-                    <template #title>
-                        <el-icon><Pointer /></el-icon>
-                        <span>附近</span>                    
-                    </template>
-                </el-menu-item>
-            </router-link>
 
             <router-link to="/fligtChat">
                     <el-menu-item index="6">
@@ -67,7 +59,7 @@
             </router-link>
 
             <router-link to="/ARPage">
-                    <el-menu-item index="6">
+                    <el-menu-item index="7">
                     <template #title>
                         <el-icon><Operation /></el-icon>
                         <span>AR增强</span>                    
