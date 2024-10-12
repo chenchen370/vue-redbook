@@ -21,18 +21,56 @@
             </router-link>
 
 
-            <el-menu-item index="3">
-                <template #title>
-                    <el-icon><BellFilled /></el-icon>
-                    <span>通知</span>
-                </template>
-            </el-menu-item>
+            <router-link to="/SettingsPage">
+                    <el-menu-item index="3">
+                    <template #title>
+                        <el-icon><BellFilled /></el-icon>
+                        <span>设置</span>                    
+                    </template>
+                </el-menu-item>
+            </router-link>
 
             <router-link to="/cardPage">
                     <el-menu-item index="4">
                     <template #title>
                         <el-icon><ZoomIn /></el-icon>
                         <span>探索</span>                    
+                    </template>
+                </el-menu-item>
+            </router-link>
+            
+            <router-link to="/neborPage">
+                    <el-menu-item index="5">
+                    <template #title>
+                        <el-icon><Pointer /></el-icon>
+                        <span>附近</span>                    
+                    </template>
+                </el-menu-item>
+            </router-link>
+
+            <router-link to="/neborPage">
+                    <el-menu-item index="5">
+                    <template #title>
+                        <el-icon><Pointer /></el-icon>
+                        <span>附近</span>                    
+                    </template>
+                </el-menu-item>
+            </router-link>
+
+            <router-link to="/fligtChat">
+                    <el-menu-item index="6">
+                    <template #title>
+                        <el-icon><Promotion /></el-icon>
+                        <span>航班聊天</span>                    
+                    </template>
+                </el-menu-item>
+            </router-link>
+
+            <router-link to="/ARPage">
+                    <el-menu-item index="6">
+                    <template #title>
+                        <el-icon><Operation /></el-icon>
+                        <span>AR增强</span>                    
                     </template>
                 </el-menu-item>
             </router-link>

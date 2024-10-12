@@ -12,7 +12,7 @@ const routes = [
     name:'comment',
     component: ()=>import('@/components/comment/comMent.vue') },
 
-        
+         
 
   { path: '/Register', 
     name:'Register',
@@ -58,7 +58,20 @@ const routes = [
           component: ()=>import('@/views/chat/chatPage.vue') },
         { path: '/chngePersonal', 
           name:'chngePersonal',
-          component: ()=>import('@/views/index/chngePersonal.vue') },  
+          component: ()=>import('@/views/index/chngePersonal.vue') }, 
+        { path: '/neborPage', 
+          name:'/neborPage',
+          component: ()=>import('@/views/index/neborPage.vue') },  
+        { path: '/fligtChat', 
+          name:'fligtChat',
+          component: ()=>import('@/views/user/fligtChat.vue') }, 
+        { path: '/SettingsPage', 
+          name:'/SettingsPage',
+          component: ()=>import('@/components/index/SettingsPage.vue') },
+          
+        { path: '/ARPage', 
+          name:'/ARPage',
+          component: ()=>import('@/views/index/ARPage.vue') },  
     ]
   },
     
