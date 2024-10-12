@@ -37,13 +37,6 @@
 <img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163259.png" width="650" height="300"/>
 
 
-
-进程已结束,退出代码0
-
-
-
-
-
 ## 安装
 
 1. 克隆仓库：
