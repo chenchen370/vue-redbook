@@ -10,6 +10,13 @@
         placeholder="输入航班号，例如: AA123"
         style="font-size: 16px; padding: 10px; width: 300px; margin-right: 10px;"
       />
+      <label for="date-search">选择日期:</label>
+      <input
+        type="date"
+        id="date-search"
+        v-model="selectedDate"
+        style="font-size: 16px; padding: 10px; margin-right: 10px;"
+      />
       <button 
         @click="showSearchResult" 
         style="font-size: 16px; padding: 10px 20px;"
@@ -19,7 +26,7 @@
     </div>
 
     <div v-if="searchResult" class="search-result">
-      当前搜索的航班号: {{ searchResult }}
+      当前搜索的航班号: {{ searchResult }} 日期: {{ selectedDate }}
     </div>
 
     <div class="grid-container">
@@ -38,7 +45,7 @@
     </div>
 
     <div v-if="filteredFlights.length === 0" class="no-results">
-      没有找到与 "{{ searchQuery }}" 匹配的航班。
+      没有找到与 "{{ searchQuery }}" 和 "{{ selectedDate }}" 匹配的航班。
     </div>
   </div>
 </template>
@@ -107,12 +114,14 @@ const flights = ref([
 ]);
 
 const searchQuery = ref('');
+const selectedDate = ref('');
 const searchResult = ref('');
 const filteredFlights = computed(() => {
-  if (!searchQuery.value) {
-    return flights.value;
-  }
-  return flights.value.filter(flight => flight.flightNumber.includes(searchQuery.value.toUpperCase()));
+  return flights.value.filter(flight => {
+    const matchesFlightNumber = flight.flightNumber.includes(searchQuery.value.toUpperCase());
+    const matchesDate = selectedDate.value ? flight.date === selectedDate.value : true;
+    return matchesFlightNumber && matchesDate;
+  });
 });
 
 // 显示搜索结果
