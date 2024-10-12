@@ -98,9 +98,9 @@ const hasLiked = ref(false); // 新增变量用于判断是否已点赞
 const hasCount=ref(false);
 const toggleIcon = () => {
   if (hasLiked.value) {
-    likeCount.value -= 1; // 如果已点赞，则减少1
+    likeCount.value += 1; // 如果已点赞，则减少1
   } else {
-    likeCount.value += 1; // 如果未点赞，则增加1
+    likeCount.value -= 1; // 如果未点赞，则增加1
   }
   hasLiked.value = !hasLiked.value; // 切换状态
   isFirstIcon.value = !isFirstIcon.value; // 切换图标
@@ -108,11 +108,11 @@ const toggleIcon = () => {
 
 const toggleStore = () => {
   if (hasCount.value) {
-    storeCount.value -= 1; // 如果已点赞，则减少1
+    storeCount.value += 1; // 如果已点赞，则减少1
   } else {
-    storeCount.value += 1; // 如果未点赞，则增加1
+    storeCount.value -= 1; // 如果未点赞，则增加1
   }
-  hasCount.value = !hasLiked.value; // 切换状态
+  hasCount.value = !hasCount.value; // 切换状态
   isFirstStore.value = !isFirstStore.value; // 切换图标
 };
 
