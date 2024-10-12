@@ -18,7 +18,7 @@
 ## 功能
 
 # 部分截图
-<img src="https://github.com/bailicangdu/vue2-elm/blob/master/screenshots/QQ截图20241012163013.png" width="200" height="200"/>
+<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163013.png" width="200" height="200"/>
 
 ## 安装
 
