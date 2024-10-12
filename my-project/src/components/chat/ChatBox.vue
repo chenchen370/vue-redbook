@@ -5,10 +5,10 @@
         <div class="message-content" :class="{ 'user-message': message.sender === 'user', 'bot-message': message.sender === 'bot' }">
           <router-link :to="`/userProfile?username=${username}`">
             <img v-if="message.sender === 'bot'" :src="botAvatar" class="avatar" />
-        </router-link>
+          </router-link>
           
           <div class="text">{{ message.text }}</div>
-          <img v-if="message.sender === 'user'" :src="userAvatar" class="avatar"  />
+          <img v-if="message.sender === 'user'" :src="userAvatar" class="avatar" />
         </div>
       </div>
     </div>
@@ -48,14 +48,34 @@ const userAvatar = ref('path/to/user-avatar.png'); // 默认用户头像路径
 const botAvatar = ref('path/to/bot-avatar.png');   // 默认机器人头像路径
 
 // 发送消息函数
+// 发送消息函数
 function sendMessage() {
   if (inputMessage.value.trim() !== '') {
     // 添加用户消息
     messages.value.push({ sender: 'user', text: inputMessage.value });
-    
+
+    // 打印用户输入
+    const userInput = inputMessage.value.toLowerCase();
+    console.log(userInput); // 打印用户输入
+
     // 模拟机器人回复
     setTimeout(() => {
-      messages.value.push({ sender: 'bot', text: '你说的是：' + inputMessage.value });
+      let botResponse = '';
+
+      // 简单的话术逻辑
+      if (userInput.includes('hello')) {
+        botResponse = '你好！有什么我可以帮助你的吗？';
+      } else if (userInput.includes('烤鸭')) {
+        botResponse = '烤鸭是我最喜欢的美食之一！你想知道哪里能吃到最好吃的烤鸭吗？';
+      } else if (userInput.includes('天气')) {
+        botResponse = '今天天气不错，适合外出哦！';
+      } else if (userInput.includes('好吃')) {
+        botResponse = '我推荐你去试试北京的全聚德烤鸭！';
+      } else {
+        botResponse = '抱歉，我不太明白你说的是什么。';
+      }
+
+      messages.value.push({ sender: 'bot', text: botResponse });
     }, 500);
     
     // 清空输入框
@@ -105,7 +125,6 @@ onMounted(async () => {
 });
 </script>
 
-
 <style scoped>
 .chat-container {
   display: flex;
@@ -115,7 +134,6 @@ onMounted(async () => {
   border: 1px solid #ccc;
   border-radius: 8px;
   overflow: hidden;
-  /* background-color: #f9f9f9; */
 }
 
 .chat-box {
