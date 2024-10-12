@@ -17,7 +17,8 @@
 
 ## 功能
 
-
+# 部分截图
+<img src="https://github.com/bailicangdu/vue2-elm/blob/master/screenshots/ewm.png" width="200" height="200"/>
 
 ## 安装
 
