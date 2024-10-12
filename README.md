@@ -18,23 +18,26 @@
 ## 功能
 
 # 部分截图
-<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163013.png" width="1365" height="619"/>
-<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163020.png" width="1365" height="619"/>
-<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163029.png" width="1365" height="619"/>
-<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163051.png" width="1365" height="619"/>
-<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163058.png" width="1365" height="619"/>
-<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163106.png" width="1365" height="619"/>
-<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163113.png" width="1365" height="619"/>
-<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163121.png" width="1365" height="619"/>
-<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163140.png" width="1365" height="619"/>
-<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163151.png" width="1365" height="619"/>
-<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163203.png" width="1365" height="619"/>
-<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163210.png" width="1365" height="619"/>
-<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163216.png" width="1365" height="619"/>
-<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163227.png" width="1365" height="619"/>
-<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163240.png" width="1365" height="619"/>
-<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163248.png" width="1365" height="619"/>
-<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163259.png" width="1365" height="619"/>
+<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163013.png" width="650" height="300"/>
+<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163020.png" width="650" height="300"/>
+<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163029.png" width="650" height="300"/>
+<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163051.png" width="650" height="300"/>
+<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163058.png" width="650" height="300"/>
+<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163106.png" width="650" height="300"/>
+<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163113.png" width="650" height="300"/>
+<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163121.png" width="650" height="300"/>
+<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163140.png" width="650" height="300"/>
+<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163151.png" width="650" height="300"/>
+<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163203.png" width="650" height="300"/>
+<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163210.png" width="650" height="300"/>
+<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163216.png" width="650" height="300"/>
+<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163227.png" width="650" height="300"/>
+<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163240.png" width="650" height="300"/>
+<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163248.png" width="650" height="300"/>
+<img src="https://github.com/chenchen370/vue-redbook/blob/main/screenshots/QQ截图20241012163259.png" width="650" height="300"/>
+
+进程已结束,退出代码0
+
 
 进程已结束,退出代码0
 
