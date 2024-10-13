@@ -9,6 +9,24 @@ const getUsers = async (req, res) => {
     }
 };
 
+const getPartner= async (req, res) => {
+    try {
+      const username = req.query.username; // 获取查询参数中的 username
+  
+      if (!username) {
+        return res.status(400).json({ message: "Username parameter is required." });
+      }
+  
+      const [rows] = await pool.query('SELECT * FROM user_info WHERE username != ?', [username]);
+      res.json(rows);
+  
+    } catch (error) {
+      console.error("Error fetching users:", error); // 记录错误信息到控制台
+      res.status(500).json({ message: "Error fetching users." }); // 向客户端返回更通用的错误信息
+    }
+  };
+
+
 const getUserDataByUsername = async (req, res) => {
     try {
         const [rows] = await pool.query('SELECT * FROM user_info WHERE username = ?', [req.query.username]);
@@ -65,4 +83,4 @@ const addUserInfo = async (req, res) => {
 
 
 
-module.exports = { getUsers,getUserDataByUsername,getPlaces,getPersonData };
+module.exports = { getUsers,getUserDataByUsername,getPlaces,getPersonData,getPartner };
