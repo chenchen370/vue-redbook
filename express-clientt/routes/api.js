@@ -12,7 +12,7 @@ router.get('/users', getUsers);
 router.get('/getUserData', getUserDataByUsername); // New endpoint for fetching user data by username
 router.get('/getPlaces', getPlaces)
 router.get('/getPersonData',getPersonData)
-
+router.get('/partner',getPartner);
 // 查询关注状态
 router.get('/checkFollow', async (req, res) => {
     const { username, bloggerId } = req.query;
