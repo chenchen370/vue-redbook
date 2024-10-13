@@ -94,7 +94,7 @@ app.get('/api/groups/:imageName', (req, res) => {
 });
 
 app.post('/api/uploadNote', async (req, res) => {
-    const { title, content, image,username } = req.body;
+    const { title, content, image, username } = req.body;
 
     // 保存图片
     const base64Data = image.replace(/^data:image\/\w+;base64,/, "");
@@ -105,24 +105,34 @@ app.post('/api/uploadNote', async (req, res) => {
         // 保存图片到文件系统
         await fs.promises.writeFile(filePath, base64Data, 'base64');
         
-        // 将数据添加到数据库
-        const [result] = await pool.query(
-            'INSERT INTO user_info (caption, content, images,username) VALUES (?, ?, ?,?)', 
-            [title, content, "images/"+fileName,username]
+        // 查询用户头像
+        const [avatarResult] = await pool.query(
+            'SELECT img_src FROM login WHERE username = ?',
+            [username]
         );
+        console.log(avatarResult);
 
+        if (avatarResult.length > 0) {
+            const authorAvatar = avatarResult[0].img_src;
+            console.log(authorAvatar)
 
+            // 插入数据到数据库
+            const [result] = await pool.query(
+                'INSERT INTO user_info (caption, content, images, username, author_avatar) VALUES (?, ?, ?, ?, ?)', 
+                [title, content, "images/" + fileName, username, authorAvatar]
+            );
 
-        // 返回成功响应
-        res.json({ message: '上传成功', id: result.insertId, title, content, imagePath: filePath,username:username });
+            // 返回成功响应
+            res.json({ message: '上传成功', id: result.insertId, title, content, imagePath: filePath, username });
+        } else {
+            // 处理未找到用户名的情况
+            res.status(404).json({ message: 'Username not found' });
+        }
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: '保存图片或添加数据失败' });
     }
 });
-
-
-
 
 app.post('/api/updateUserData', async (req, res) => {
     const { username, password, sex, description, age, img_src, red_id } = req.body;
