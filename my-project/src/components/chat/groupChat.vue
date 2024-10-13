@@ -40,7 +40,6 @@
   
   <script setup>
   import { ref, onMounted } from 'vue';
-  import { useRoute } from 'vue-router';
   import axios from 'axios';
   
   // 消息记录
@@ -51,14 +50,14 @@
   // 用户输入
   const inputMessage = ref('');
   
-  // 头像路径
-  const route = useRoute();
-  const username = ref('');
+  // 用户数据
+  const username = ref(localStorage.getItem('username') || '');
   const userData = ref(null);
   const error = ref(null);
+  const loading = ref(false);
   
   // 头像路径
-  const userAvatar = ref('http://localhost:3000/api/1728641884781.png'); // 默认用户头像路径
+  const userAvatar = ref('22'); // 默认用户头像路径
   const botAvatar = ref('http://localhost:3000/api/groups/QQ图片20241013014017.jpg'); // 默认机器人头像路径
   
   // 航班信息从 URL 获取
@@ -89,53 +88,32 @@
     }
   }
   
-  // 获取航班信息
-  const fetchFlightInfo = () => {
-    flightNumber.value = route.query.flightNumber || '未知航班号';
-    flightDate.value = route.query.flightDate || '未知日期';
-  };
-  
-  // 获取用户数据
-  const fetchUserData = async () => {
-    username.value = route.query.username;
-    if (!username.value) {
-      error.value = 'Username not found in URL';
-      return;
-    }
-  
-    try {
-      const response = await axios.get('/api/api/getUserData', {
-        params: { username: username.value }
-      });
-      userData.value = response.data;
-      botAvatar.value = `http://localhost:3000/api/${response.data.author_avatar}`;
-    } catch (err) {
-      error.value = err.response?.data?.message || 'An error occurred while fetching user data';
-    }
-  };
-  
   // 获取个人数据
   const fetchPersonData = async () => {
     if (!username.value) {
-      error.value = 'Username not found in URL';
+      error.value = 'Username not found in localStorage';
       return;
     }
   
+    loading.value = true;
+    error.value = null;
+  
     try {
       const response = await axios.get('/api/api/getPersonData', {
-        params: { username: localStorage.getItem('username') }
+        params: { username: username.value }
       });
       userData.value = response.data;
       userAvatar.value = `http://localhost:3000/api/${response.data.img_src}`;
     } catch (err) {
       error.value = err.response?.data?.message || 'An error occurred while fetching user data';
       console.error('Error fetching user data:', err);
+    } finally {
+      loading.value = false;
     }
   };
   
-  onMounted(async () => {
-    fetchFlightInfo();
-    await Promise.all([fetchUserData(), fetchPersonData()]);
+  onMounted(() => {
+    fetchPersonData();
   });
   </script>
   
