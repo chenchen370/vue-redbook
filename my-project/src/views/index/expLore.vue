@@ -36,7 +36,7 @@
       </div>
 
       <div style="margin-left: 60px;">
-        {{ userData?.content }}
+        <div v-html="userData?.content"></div>
       </div>
 
       <div class="post" style="margin-left: 60px;display: flex; align-items: center;align-content: center;">
