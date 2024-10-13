@@ -68,6 +68,16 @@
             </router-link>
 
 
+            <router-link to="/chngePersonal">
+                    <el-menu-item index="8">
+                    <template #title>
+                        <el-icon><User /></el-icon>
+                        <span>个人信息</span>                    
+                    </template>
+                </el-menu-item>
+            </router-link>
+
+
         </el-menu>
 
     </div>
