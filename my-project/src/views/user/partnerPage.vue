@@ -43,13 +43,15 @@
   const users = ref([]); // 假设你从 API 获取用户数据并赋值给这个变量
 
   const fetchUsers = async () => {
-    try {
-      const response = await axios.get('/api/api/users');
-      users.value = response.data;
-    } catch (error) {
-      console.error('Error fetching users:', error);
-    }
-  };
+  try {
+    const response = await axios.get('/api/api/partner', {
+      params: { username: localStorage.getItem('username') }
+    });
+    users.value = response.data;
+  } catch (error) {
+    console.error('Error fetching users:', error);
+  }
+};
 
   onMounted(fetchUsers);
   </script>
